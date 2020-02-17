@@ -3,13 +3,16 @@ pub use converter::*;
 
 
 fn main() {
-    let cleartext = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
+    let cleartext = "1c0111001f010100061a024b53535009181c";
+    let text_hex = str_to_hex(cleartext).unwrap();
 
-    let decoded_hex = converter::str_to_hex(cleartext).unwrap();
+    let cipher = "686974207468652062756c6c277320657965";
+    let cipher_hex = str_to_hex(cipher).unwrap();
 
-    println!("{:?}", cleartext);
+    let encoded = fixed_xor(&text_hex, &cipher_hex);
 
-    let encoded_base64 = hex_to_base64(&decoded_hex);
+    let expected_hex = str_to_hex("746865206b696420646f6e277420706c6179").unwrap();
 
-    println!("Base64: {:?}", encoded_base64);
+    println!("{:?}", std::str::from_utf8(&expected_hex).unwrap());
+    println!("{:?}", std::str::from_utf8(&encoded).unwrap());
 }
